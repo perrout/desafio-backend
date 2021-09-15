@@ -16,17 +16,34 @@ class UserFactory extends Factory
     protected $model = User::class;
 
     /**
+     * Get a new Faker instance.
+     *
+     * @return \Faker\Generator
+     */
+    public function withFaker()
+    {
+        return \Faker\Factory::create('pt_BR');
+    }
+
+    /**
      * Define the model's default state.
      *
      * @return array
      */
     public function definition()
     {
+        $document = $this->faker->randomElement([$this->faker->unique()->cpf(false), $this->faker->unique()->cnpj(false)]);
+        $type = (strlen($document) == 11) ? 'common' : 'trader';
         return [
-            'name' => $this->faker->name(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'document' => $document,
+            'wallet' => $this->faker->randomFloat(2, $min = 0, $max = 1000),
             'email' => $this->faker->unique()->safeEmail(),
+            'password' => app('hash')->make($document),
+            'status' => true,
+            'type' => $type,
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];
     }

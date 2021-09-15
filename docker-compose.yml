@@ -15,6 +15,9 @@ services:
             - ${API_PORT:-80}:8000
         depends_on:
             - db-dev
+        environment:
+            PUID: 1001
+            PGID: 1001
     queue-dev:
         build:
             context: .
