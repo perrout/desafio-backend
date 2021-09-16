@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Transaction\TransactionController;
 use App\Http\Controllers\Users\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('users', [UsersController::class, 'index'])->name('users');
-Route::post('users/{id}', [UsersController::class, 'show'])->name('users.show');
-Route::put('users/{id}/update', [UsersController::class, 'update'])->name('users.update');
-Route::delete('users/{id}/delete', [UsersController::class, 'destroy'])->name('users.delete');
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('users')->name('users.')->group(function () {
+    Route::post('/', [UsersController::class, 'index'])->name('list');
+    Route::post('/{id}', [UsersController::class, 'show'])->name('show');
+    Route::put('/{id}/update', [UsersController::class, 'update'])->name('update');
+    Route::delete('/{id}/delete', [UsersController::class, 'destroy'])->name('delete');
 });
+
+Route::post('/transaction', [TransactionController::class, 'transfer'])->name('transaction');
