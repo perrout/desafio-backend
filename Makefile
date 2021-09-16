@@ -1,11 +1,11 @@
 # Run Docker Compose build
 build:
 	@if [ ! -f .env ]; then cp .env.example .env; fi;
-	docker-compose build --no-cache
+	@docker-compose build --no-cache
 
 # Run Docker Compose up
 up:
-	docker-compose up -d
+	@docker-compose up -d
 
 # Run Laravel Setup
 setup:
@@ -16,7 +16,7 @@ setup:
 
 # Run Docker Compose up and log the output in a file
 debug:
-	docker-compose up > server-log.txt
+	@docker-compose up > server-log.txt
 
 # Run Laravel Test
 test:
@@ -24,7 +24,7 @@ test:
 
 # Run Docker Compose down
 down:
-	docker-compose down
+	@docker-compose down
 
 # Run Docker Bash
 bash:
