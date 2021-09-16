@@ -23,6 +23,6 @@ class TransactionRepository implements TransactionRepositoryContract
     public function changeStatus($transactionId, $status)
     {
         $transaction = $this->model->findOrFail($transactionId);
-        return $this->model->update(['status' => $status]);
+        return $transaction->update(['status' => $status]);
     }
 }
