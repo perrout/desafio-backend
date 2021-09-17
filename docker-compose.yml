@@ -56,6 +56,10 @@ services:
           test: ["CMD", "redis-cli", "ping"]
           retries: 3
           timeout: 5s
+    memcached-dev:
+        image: memcached
+        ports:
+            - ${MEMCACHED_PORT:-11211}:11211
     adminer-dev:
         image: adminer
         container_name: adminer-dev
