@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\HasBalance;
 use App\Rules\IsCommonUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -32,7 +32,7 @@ class TransactionRequest extends FormRequest
         return [
             'payer_id'  => ['required', 'integer', Rule::exists('users', 'id'), new IsCommonUser],
             'payee_id'  => ['required', 'integer', Rule::exists('users', 'id')],
-            'value'     => ['required']
+            'value'     => ['required', 'numeric', new HasBalance($this->input('payer_id'))]
         ];
     }
 
@@ -51,7 +51,6 @@ class TransactionRequest extends FormRequest
             'error' => $validator->errors()
         ];
 
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
-        // throw new ValidationException($validator, response()->json($data, 422));
+        throw new ValidationException($validator, response()->json($data, 422));
     }
 }

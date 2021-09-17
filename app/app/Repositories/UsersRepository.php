@@ -44,6 +44,12 @@ class UsersRepository implements UsersRepositoryContract
     public function isCommon($userId)
     {
         $user = $this->findById($userId);
-        return ($user->type === 'common') ?: false;
+        return $user->type === 'common';
+    }
+
+    public function getWallet($userId)
+    {
+        $user = $this->findById($userId);
+        return $user->wallet ?: 0;
     }
 }

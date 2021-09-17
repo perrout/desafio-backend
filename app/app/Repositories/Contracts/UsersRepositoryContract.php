@@ -13,4 +13,6 @@ interface UsersRepositoryContract
     public function destroy($userId);
 
     public function isCommon($userId);
+
+    public function getWallet($userId);
 }

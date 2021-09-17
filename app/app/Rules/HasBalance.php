@@ -2,22 +2,24 @@
 
 namespace App\Rules;
 
-use App\Repositories\Contracts\UsersRepositoryContract;
 use App\Repositories\UsersRepository;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
-class IsCommonUser implements Rule
+class HasBalance implements Rule
 {
     private $repository;
+    private $userId;
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($userId)
     {
         $this->repository = new UsersRepository();
+        $this->userId = $userId;
     }
 
     /**
@@ -29,7 +31,7 @@ class IsCommonUser implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->repository->isCommon($value);
+        return $value <= $this->repository->getWallet($this->userId);
     }
 
     /**
@@ -39,6 +41,6 @@ class IsCommonUser implements Rule
      */
     public function message()
     {
-        return 'This account can only receive transfers.';
+        return 'Account with insufficient balance.';
     }
 }
