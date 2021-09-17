@@ -40,4 +40,10 @@ class UsersRepository implements UsersRepositoryContract
         }
         return 'fail';
     }
+
+    public function isCommon($userId)
+    {
+        $user = $this->findById($userId);
+        return ($user->type === 'common') ?: false;
+    }
 }

@@ -11,4 +11,6 @@ interface UsersRepositoryContract
     public function update($userId, array $data);
 
     public function destroy($userId);
+
+    public function isCommon($userId);
 }
