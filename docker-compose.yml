@@ -58,6 +58,7 @@ services:
           timeout: 5s
     memcached-dev:
         image: memcached
+        container_name: memcached-dev
         ports:
             - ${MEMCACHED_PORT:-11211}:11211
     adminer-dev:
