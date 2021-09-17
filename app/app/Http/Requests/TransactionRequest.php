@@ -29,7 +29,7 @@ class TransactionRequest extends FormRequest
         return [
             'payer_id'  => ['required', 'integer', Rule::exists('users', 'id'), new IsCommonUser],
             'payee_id'  => ['required', 'integer', Rule::exists('users', 'id')],
-            'value'     => ['required', 'numeric', new HasBalance($this->input('payer_id'))]
+            'value'     => ['required', 'numeric', $this->input('payer_id') ? new HasBalance($this->input('payer_id')) : '']
         ];
     }
 }
