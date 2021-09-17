@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use Exception;
-use Throwable;
 
 class TransactionController extends Controller
 {
@@ -19,7 +18,7 @@ class TransactionController extends Controller
 
     public function transfer(TransactionRequest $request)
     {
-        try{
+        try {
             $data = $request->safe()->only([
                 'payer_id',
                 'payee_id',
@@ -31,7 +30,7 @@ class TransactionController extends Controller
                 'data' => $transaction
             ];
             return response()->json($response);
-        } catch (Exception | Throwable $e) {
+        } catch (Exception $e) {
             $response = [
                 'status' => false,
                 'error' => $e->getMessage()

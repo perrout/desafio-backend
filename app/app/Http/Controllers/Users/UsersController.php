@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UsersRequest;
 use App\Repositories\Contracts\UsersRepositoryContract;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Throwable;
 
 class UsersController extends Controller
 {
@@ -20,14 +18,14 @@ class UsersController extends Controller
 
     public function index()
     {
-        try{
+        try {
             $users = $this->repository->all();
             $response = [
                 'status' => true,
                 'data' => $users
             ];
             return response()->json($response);
-        } catch (Exception | Throwable $e) {
+        } catch (Exception $e) {
             $response = [
                 'status' => false,
                 'error' => $e->getMessage()
@@ -38,20 +36,14 @@ class UsersController extends Controller
 
     public function show($userId)
     {
-        try{
+        try {
             $user = $this->repository->findById($userId);
             $response = [
                 'status' => true,
                 'data' => $user
             ];
             return response()->json($response);
-        } catch (ModelNotFoundException $e) {
-            $response = [
-                'status' => false,
-                'error' => 'User not found'
-            ];
-            return response()->json($response, 404);
-        } catch (Exception | Throwable $e) {
+        } catch (Exception $e) {
             $response = [
                 'status' => false,
                 'error' => $e->getMessage()
@@ -62,7 +54,7 @@ class UsersController extends Controller
 
     public function update(UsersRequest $request, $userId)
     {
-        try{
+        try {
             $data = $request->safe()->only([
                 'first_name',
                 'last_name',
@@ -79,7 +71,7 @@ class UsersController extends Controller
                 'data' => $user
             ];
             return response()->json($response);
-        } catch (Exception | Throwable $e) {
+        } catch (Exception $e) {
             $response = [
                 'status' => false,
                 'error' => $e->getMessage()
@@ -90,20 +82,14 @@ class UsersController extends Controller
 
     public function destroy($userId)
     {
-        try{
+        try {
             $user = $this->repository->destroy($userId);
             $response = [
                 'status' => true,
                 'data' => $user
             ];
             return response()->json($response);
-        } catch (ModelNotFoundException $e) {
-            $response = [
-                'status' => false,
-                'error' => 'User not found'
-            ];
-            return response()->json($response, 404);
-        } catch (Exception | Throwable $e) {
+        } catch (Exception $e) {
             $response = [
                 'status' => false,
                 'error' => $e->getMessage()

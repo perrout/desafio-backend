@@ -2,7 +2,6 @@
 
 namespace App\Rules;
 
-use App\Repositories\Contracts\UsersRepositoryContract;
 use App\Repositories\UsersRepository;
 use Illuminate\Contracts\Validation\Rule;
 

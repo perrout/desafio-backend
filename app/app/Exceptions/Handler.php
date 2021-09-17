@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
+use Mockery\Exception\InvalidOrderException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,8 +38,35 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            $response = [
+                'status' => false,
+                'errors' => 'Record not found.'
+            ];
+            if ($request->is('api/*')) {
+                return response()->json($response, $e->getCode() ?: 404);
+            }
         });
+
+        $this->renderable(function (ValidationException $e, $request) {
+            $response = [
+                'status' => false,
+                'errors' => $e->errors()
+            ];
+            if ($request->is('api/*')) {
+                return response($response, $e->getCode() ?: 422);
+            }
+        });
+
+        $this->renderable(function (Throwable $e, $request) {
+            $response = [
+                'status' => false,
+                'errors' => $e->getMessage()
+            ];
+            if ($request->is('api/*')) {
+                return response()->json($response, $e->getCode() ?: 400);
+            }
+        });
+
     }
 }
