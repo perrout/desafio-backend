@@ -41,6 +41,6 @@ class HasBalance implements Rule
      */
     public function message()
     {
-        return 'Account with insufficient funds.';
+        return 'Account with insufficient founds.';
     }
 }

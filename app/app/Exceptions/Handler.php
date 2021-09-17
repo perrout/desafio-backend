@@ -49,6 +49,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ValidationException $e, $request) {
             $response = [
                 'status' => false,
+                'code' => $e->getCode() ?: 422,
                 'errors' => $e->errors()
             ];
             if ($request->is('api/*')) {

@@ -18,7 +18,7 @@ class TransactionController extends Controller
 
     public function transfer(TransactionRequest $request)
     {
-        try {
+        try{
             $data = $request->safe()->only([
                 'payer_id',
                 'payee_id',

@@ -16,16 +16,6 @@ class UserFactory extends Factory
     protected $model = User::class;
 
     /**
-     * Get a new Faker instance.
-     *
-     * @return \Faker\Generator
-     */
-    public function withFaker()
-    {
-        return \Faker\Factory::create('pt_BR');
-    }
-
-    /**
      * Define the model's default state.
      *
      * @return array
