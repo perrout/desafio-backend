@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
-use App\Repositories\Contracts\TransactionRepositoryContract;
+use App\Services\Transaction\TransactionServiceContract;
 use Exception;
 
 class TransactionController extends Controller
 {
-    private $repository;
+    private $service;
 
-    public function __construct(TransactionRepositoryContract $transactionRepository)
+    public function __construct(TransactionServiceContract $transactionService)
     {
-        $this->repository = $transactionRepository;
+        $this->service = $transactionService;
     }
 
     public function transfer(TransactionRequest $request)
@@ -24,7 +24,7 @@ class TransactionController extends Controller
                 'payee_id',
                 'value'
             ]);
-            $transaction = $this->repository->transfer($data);
+            $transaction = $this->service->createTransfer($data);
             $response = [
                 'status' => true,
                 'data' => $transaction

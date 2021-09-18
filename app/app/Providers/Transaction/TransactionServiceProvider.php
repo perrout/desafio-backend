@@ -4,12 +4,14 @@ namespace App\Providers\Transaction;
 
 use App\Repositories\Contracts\TransactionRepositoryContract;
 use App\Repositories\TransactionRepository;
+use App\Services\Transaction\TransactionService;
+use App\Services\Transaction\TransactionServiceContract;
 use Illuminate\Support\ServiceProvider;
 
-class TransactionRepositoryServiceProvider extends ServiceProvider
+class TransactionServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      *
      * @return void
      */
@@ -19,7 +21,7 @@ class TransactionRepositoryServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      *
      * @return void
      */
@@ -28,6 +30,11 @@ class TransactionRepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             TransactionRepositoryContract::class,
             TransactionRepository::class
+        );
+
+        $this->app->bind(
+            TransactionServiceContract::class,
+            TransactionService::class
         );
     }
 }
