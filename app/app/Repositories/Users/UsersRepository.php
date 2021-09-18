@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Users;
 
-use App\Http\Requests\UsersRequest;
 use App\Models\User;
-use App\Repositories\Contracts\UsersRepositoryContract;
+use App\Repositories\Users\UsersRepositoryContract;
 
 class UsersRepository implements UsersRepositoryContract
 {

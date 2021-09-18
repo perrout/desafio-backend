@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UsersRequest;
-use App\Repositories\Contracts\UsersRepositoryContract;
+use App\Repositories\Users\UsersRepositoryContract;
 use Exception;
 
 class UsersController extends Controller

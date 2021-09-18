@@ -2,9 +2,8 @@
 
 namespace App\Rules;
 
-use App\Repositories\UsersRepository;
+use App\Repositories\Users\UsersRepository;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Log;
 
 class IsCommonUser implements Rule
 {

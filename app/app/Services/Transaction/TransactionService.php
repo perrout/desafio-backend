@@ -2,7 +2,7 @@
 
 namespace App\Services\Transaction;
 
-use App\Repositories\Contracts\TransactionRepositoryContract;
+use App\Repositories\Transaction\TransactionRepositoryContract;
 use App\Services\Transaction\TransactionServiceContract;
 
 class TransactionService implements TransactionServiceContract

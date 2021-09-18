@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Transaction;
 
-use App\Http\Requests\TransactionRequest;
 use App\Models\Transaction;
-use App\Repositories\Contracts\TransactionRepositoryContract;
+use App\Repositories\Transaction\TransactionRepositoryContract;
 
 class TransactionRepository implements TransactionRepositoryContract
 {
