@@ -1,36 +1,10 @@
 version: '3.9'
 
 services:
-    api-dev:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: api-dev
-        command: 'php artisan serve --host=0.0.0.0'
-        volumes:
-            - './app:/app'
-        networks:
-            - dev
-        ports:
-            - ${API_PORT:-80}:8000
-        depends_on:
-            - db-dev
-        environment:
-            PUID: 1001
-            PGID: 1001
-    queue-dev:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: queue-dev
-        command: 'php artisan queue:work'
-        networks:
-            - dev
-        depends_on:
-            - db-dev
     db-dev:
         image: mysql:5.7
         container_name: db-dev
+        restart: always
         environment:
             MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
             MYSQL_DATABASE: '${MYSQL_DATABASE}'
@@ -46,6 +20,7 @@ services:
     redis-dev:
         image: 'redis:alpine'
         container_name: redis-dev
+        restart: always
         ports:
             - ${REDIS_PORT:-6379}:6379
         volumes:
@@ -59,18 +34,57 @@ services:
     memcached-dev:
         image: memcached
         container_name: memcached-dev
+        restart: always
         ports:
             - ${MEMCACHED_PORT:-11211}:11211
     adminer-dev:
         image: adminer
         container_name: adminer-dev
         restart: always
+        networks:
+            - dev
         depends_on:
             - db-dev
+        links: 
+            - db-dev
+        ports:
+            - ${ADMINER_PORT:-8080}:8080
+    api-dev:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: api-dev
+        restart: always
+        command: 'php artisan serve --host=0.0.0.0'
+        volumes:
+            - ./app:/app
         networks:
             - dev
         ports:
-            - ${ADMINER_PORT:-8080}:8080
+            - ${API_PORT:-80}:8000
+        depends_on:
+            - db-dev
+        links: 
+            - db-dev
+        environment:
+            PUID: 1000
+            PGID: 1000
+    api-queue-dev:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: api-queue-dev
+        restart: always
+        command: 'php artisan queue:work'
+        volumes:
+            - ./app:/app
+        networks:
+            - dev
+        depends_on:
+            - db-dev
+        environment:
+            PUID: 1000
+            PGID: 1000
 networks:
     dev:
         driver: bridge
