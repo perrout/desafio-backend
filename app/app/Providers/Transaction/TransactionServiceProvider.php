@@ -2,8 +2,8 @@
 
 namespace App\Providers\Transaction;
 
-use App\Repositories\Transaction\TransactionRepositoryContract;
 use App\Repositories\Transaction\TransactionRepository;
+use App\Repositories\Transaction\TransactionRepositoryContract;
 use App\Services\Transaction\TransactionService;
 use App\Services\Transaction\TransactionServiceContract;
 use Illuminate\Support\ServiceProvider;

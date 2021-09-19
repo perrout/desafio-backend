@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UsersRequest;
-use App\Repositories\Users\UsersRepositoryContract;
+use App\Services\Users\UsersServiceContract;
 use Exception;
 
 class UsersController extends Controller
 {
-    private $repository;
+    private $service;
 
-    public function __construct(UsersRepositoryContract $usersRepository)
+    public function __construct(UsersServiceContract $usersService)
     {
-        $this->repository = $usersRepository;
+        $this->service = $usersService;
     }
 
     public function index()
     {
         try {
-            $users = $this->repository->all();
+            $users = $this->service->all();
             $response = [
                 'status' => true,
                 'data' => $users
@@ -37,7 +37,7 @@ class UsersController extends Controller
     public function show($userId)
     {
         try {
-            $user = $this->repository->findById($userId);
+            $user = $this->service->show($userId);
             $response = [
                 'status' => true,
                 'data' => $user
@@ -65,7 +65,7 @@ class UsersController extends Controller
                 'status',
                 'type'
             ]);
-            $user = $this->repository->update($userId, $data);
+            $user = $this->service->update($userId, $data);
             $response = [
                 'status' => true,
                 'data' => $user
@@ -83,7 +83,7 @@ class UsersController extends Controller
     public function destroy($userId)
     {
         try {
-            $user = $this->repository->destroy($userId);
+            $user = $this->service->destroy($userId);
             $response = [
                 'status' => true,
                 'data' => $user
