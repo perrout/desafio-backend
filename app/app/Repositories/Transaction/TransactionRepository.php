@@ -19,6 +19,18 @@ class TransactionRepository implements TransactionRepositoryContract
         return $this->model->create($data);
     }
 
+    public function setStatusCompleted($transactionId)
+    {
+        $transaction = $this->model->findOrFail($transactionId);
+        return $transaction->update(['status' => 'completed']);
+    }
+
+    public function setStatusFailed($transactionId)
+    {
+        $transaction = $this->model->findOrFail($transactionId);
+        return $transaction->update(['status' => 'failed']);
+    }
+
     public function changeStatus($transactionId, $status)
     {
         $transaction = $this->model->findOrFail($transactionId);
