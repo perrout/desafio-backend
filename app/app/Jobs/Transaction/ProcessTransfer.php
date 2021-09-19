@@ -3,6 +3,7 @@
 namespace App\Jobs\Transaction;
 
 use App\Models\Transaction;
+use App\Services\Authorization\AuthorizationServiceContract;
 use App\Services\Transaction\TransactionServiceContract;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -15,6 +16,7 @@ class ProcessTransfer implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $authorization;
     private $transaction;
 
     /**
@@ -22,9 +24,10 @@ class ProcessTransfer implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Transaction $transaction)
+    public function __construct(Transaction $transaction, AuthorizationServiceContract $authorization)
     {
         $this->transaction = $transaction;
+        $this->authorization = $authorization;
     }
 
     /**
@@ -34,6 +37,8 @@ class ProcessTransfer implements ShouldQueue
      */
     public function handle(TransactionServiceContract $transactionService)
     {
-        $transactionService->handleTransfer($this->transaction);
+        if ($this->authorization->status()) {
+            $transactionService->handleTransfer($this->transaction);
+        }
     }
 }

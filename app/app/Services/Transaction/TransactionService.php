@@ -5,25 +5,28 @@ namespace App\Services\Transaction;
 use App\Jobs\Transaction\ProcessTransfer;
 use App\Repositories\Users\UsersRepositoryContract;
 use App\Repositories\Transaction\TransactionRepositoryContract;
+use App\Services\Authorization\AuthorizationServiceContract;
 use App\Services\Transaction\TransactionServiceContract;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
 class TransactionService implements TransactionServiceContract
 {
+    private $authorizationService;
     private $transactionRepository;
     private $usersRepository;
 
-    public function __construct(TransactionRepositoryContract $transactionRepository, UsersRepositoryContract $usersRepository)
+    public function __construct(TransactionRepositoryContract $transactionRepository, UsersRepositoryContract $usersRepository, AuthorizationServiceContract $authorizationService)
     {
         $this->transactionRepository = $transactionRepository;
         $this->usersRepository = $usersRepository;
+        $this->authorizationService = $authorizationService;
     }
 
     public function createTransfer(array $data)
     {
         $transfer = $this->transactionRepository->transfer($data);
-        ProcessTransfer::dispatch($transfer);
+        ProcessTransfer::dispatch($transfer, $this->authorizationService);
         return $transfer;
     }
 

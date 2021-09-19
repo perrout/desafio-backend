@@ -174,9 +174,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\Authorization\AuthorizationServiceProvider::class,
         App\Providers\Transaction\TransactionServiceProvider::class,
         App\Providers\Users\UsersServiceProvider::class,
-
     ],
 
     /*
