@@ -15,7 +15,7 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transfer_id')->constrained('transfer');
+            $table->foreignId('transaction_id')->constrained('transactions', 'id');
             $table->json('data')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
