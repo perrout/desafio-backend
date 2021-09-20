@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Notification;
 
-use App\Models\Notification\Notification;
+use App\Models\Notification;
 use App\Services\Notification\NotificationServiceContract;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -37,7 +37,7 @@ class SendTransferReceipt implements ShouldQueue
     public function handle()
     {
         if ($this->notificationService->send($this->notification->toArray())) {
-            $this->notificationService->handleNotitication($this->notification->toArray());
+            $this->notificationService->handleNotitication($this->notification->id);
         }
     }
 }
