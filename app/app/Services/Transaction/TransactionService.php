@@ -14,33 +14,28 @@ class TransactionService implements TransactionServiceContract
 {
     private $authorizationService;
     private $transactionRepository;
-    private $usersRepository;
 
-    public function __construct(TransactionRepositoryContract $transactionRepository, UsersRepositoryContract $usersRepository, AuthorizationServiceContract $authorizationService)
+    public function __construct(TransactionRepositoryContract $transactionRepository, AuthorizationServiceContract $authorizationService)
     {
         $this->transactionRepository = $transactionRepository;
-        $this->usersRepository = $usersRepository;
         $this->authorizationService = $authorizationService;
     }
 
-    public function createTransfer(array $data)
+    public function createTransfer(array $transaction)
     {
-        $transfer = $this->transactionRepository->transfer($data);
-        ProcessTransfer::dispatch($transfer, $this->authorizationService)->delay(now()->addMinutes(1));
+        $transfer = $this->transactionRepository->createTransfer($transaction);
+        ProcessTransfer::dispatch($transfer, $this->authorizationService);
+        // ProcessTransfer::dispatch($transfer, $this->authorizationService)->delay(now()->addMinutes(1));
         return $transfer;
     }
 
-    public function handleTransfer(array $data)
+    public function handleTransfer(array $transaction)
     {
-        DB::beginTransaction();
-        try {
-            $this->usersRepository->decreaseBalance($data['payer_id'], $data['value']);
-            $this->usersRepository->increaseBalance($data['payee_id'], $data['value']);
-            $this->transactionRepository->setStatusCompleted($data['id']);
-            DB::commit();
-        } catch (Exception $e) {
-            $this->transactionRepository->setStatusFailed($data['id']);
-            DB::rollback();
+        if ($this->transactionRepository->handleTransfer($transaction)) {
+            return $this->transactionRepository->setStatusCompleted($transaction['id']);
         }
+
+        return $this->transactionRepository->setStatusFailed($transaction['id']);
+
     }
 }
