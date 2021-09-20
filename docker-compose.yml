@@ -57,7 +57,7 @@ services:
         restart: always
         command: 'php artisan serve --host=0.0.0.0'
         volumes:
-            - ./app:/app
+            - data-app:/app
         networks:
             - dev
         ports:
@@ -66,9 +66,6 @@ services:
             - db-dev
         links: 
             - db-dev
-        environment:
-            PUID: 1000
-            PGID: 1000
     api-queue-dev:
         build:
             context: .
@@ -77,18 +74,20 @@ services:
         restart: always
         command: 'php artisan queue:work'
         volumes:
-            - ./app:/app
+            - data-app:/app
         networks:
             - dev
         depends_on:
             - db-dev
-        environment:
-            PUID: 1000
-            PGID: 1000
 networks:
     dev:
         driver: bridge
 volumes:
+    data-app:
+        driver_opts:
+            type: none
+            device: ${PWD}/app
+            o: bind
     data-db:
         driver: local
     data-redis:
