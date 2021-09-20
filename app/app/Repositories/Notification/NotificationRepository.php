@@ -22,6 +22,7 @@ class NotificationRepository implements NotificationRepositoryContract
     public function setAsSent($notificationId)
     {
         $transaction = $this->model->findOrFail($notificationId);
-        return $transaction->update(['status' => 1]);
+        $transaction->update(['status' => 1]);
+        return $transaction;
     }
 }

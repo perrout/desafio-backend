@@ -6,6 +6,6 @@ interface NotificationRepositoryContract
 {
     public function create(array $data);
 
-    public function setAsSent($notificationId);
+    public function setAsSent(int $notificationId);
 
 }
