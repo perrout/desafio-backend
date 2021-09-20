@@ -35,7 +35,7 @@ class TransactionController extends Controller
                 'status' => false,
                 'error' => $e->getMessage()
             ];
-            return response()->json($response, $e->getCode());
+            return response()->json($response,  $e->getCode() ?: 400);
         }
     }
 
@@ -53,7 +53,7 @@ class TransactionController extends Controller
                 'status' => false,
                 'error' => $e->getMessage()
             ];
-            return response()->json($response, $e->getCode());
+            return response()->json($response, $e->getCode() ?: 400);
         }
     }
 
