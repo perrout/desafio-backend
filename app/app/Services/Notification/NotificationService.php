@@ -14,7 +14,7 @@ class NotificationService implements NotificationServiceContract
 
     public function __construct(Http $httpClient, NotificationRepositoryContract $notificationRepository)
     {
-        $this->endpoint = env('AUTHORIZATION_ENDPOINT', 'http://o4d9z.mocklab.io/notify');
+        $this->endpoint = env('NOTIFICATION_ENDPOINT', 'http://o4d9z.mocklab.io/notify');
         $this->httpClient = $httpClient;
         $this->notificationRepository = $notificationRepository;
     }
@@ -32,8 +32,13 @@ class NotificationService implements NotificationServiceContract
         }
     }
 
-    public function handleNotitication(array $notification)
+    public function createNotitication(array $notification)
     {
-        return $this->notificationRepository->setAsSent($notification);
+        return $this->notificationRepository->create($notification);
+    }
+
+    public function handleNotitication($notificationId)
+    {
+        return $this->notificationRepository->setAsSent($notificationId);
     }
 }

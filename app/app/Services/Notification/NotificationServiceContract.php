@@ -6,5 +6,7 @@ interface NotificationServiceContract
 {
     public function send(array $notification);
 
-    public function handleNotitication(array $notification);
+    public function createNotitication(array $notification);
+
+    public function handleNotitication(int $notificationId);
 }
