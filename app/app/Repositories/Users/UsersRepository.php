@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Users;
 
+use App\Exceptions\CustomException;
 use App\Models\User;
 use App\Repositories\Users\UsersRepositoryContract;
 
@@ -72,9 +73,15 @@ class UsersRepository implements UsersRepositoryContract
     public function decreaseBalance($userId, $value)
     {
         $user = $this->findById($userId);
+
+        if ($user->wallet <= $value) {
+            throw new CustomException("Account with insufficient founds.", 422);
+        }
+
         $user->update([
             'wallet' => $user->wallet -= floatval($value)
         ]);
+
         return $user;
     }
 }
