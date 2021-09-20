@@ -23,4 +23,7 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::delete('/{id}/delete', [UsersController::class, 'destroy'])->name('delete');
 });
 
-Route::post('/transaction', [TransactionController::class, 'transfer'])->name('transaction');
+Route::prefix('transaction')->name('transaction.')->group(function () {
+    Route::post('/', [TransactionController::class, 'transfer'])->name('create');
+    Route::post('/{id}/revert', [TransactionController::class, 'revert'])->name('revert');
+});

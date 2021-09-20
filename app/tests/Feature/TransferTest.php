@@ -21,7 +21,7 @@ class TransferTest extends TestCase
             "payee_id" => $traderUser->id,
             "value" => 10.00
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(422);
 
         // payer is trader
@@ -30,7 +30,7 @@ class TransferTest extends TestCase
             "payee_id" => $commonUser->id,
             "value" => 10.00
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(422);
 
         // payer not found
@@ -39,7 +39,7 @@ class TransferTest extends TestCase
             "payee_id" => $commonUser->id,
             "value" => 10.00
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(404);
 
         // payee is missing
@@ -47,7 +47,7 @@ class TransferTest extends TestCase
             "payer_id" => $commonUser->id,
             "value" => 10.00
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(422);
 
         // payee not found
@@ -56,7 +56,7 @@ class TransferTest extends TestCase
             "payee_id" => 999,
             "value" => 10.00
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(422);
 
         // value is missing
@@ -64,7 +64,7 @@ class TransferTest extends TestCase
             "payer_id" => $commonUser->id,
             "payee_id" => $traderUser->id
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(422);
 
         // value is greater than the balance
@@ -73,7 +73,7 @@ class TransferTest extends TestCase
             "payee_id" => $traderUser->id,
             "value" => 999999.00
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(422);
 
         // value is not a number
@@ -82,7 +82,7 @@ class TransferTest extends TestCase
             "payee_id" => $traderUser->id,
             "value" => "10,00"
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(422);
     }
 
@@ -98,7 +98,7 @@ class TransferTest extends TestCase
             "payee_id" => $traderUser->id,
             "value" => 10.00
         ];
-        $response = $this->postJson(route('transaction'), $data);
+        $response = $this->postJson(route('transaction.create'), $data);
         $response->assertStatus(200);
     }
 }
