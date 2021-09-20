@@ -66,7 +66,7 @@ http://loacalhost
 ```json
 {
     "value" : 100.00,
-    "payer" : 4,
-    "payee" : 15
+    "payer_id" : 4,
+    "payee_id" : 15
 }
 ```
