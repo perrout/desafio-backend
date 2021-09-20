@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\Authorization\AuthorizationServiceProvider::class,
+        App\Providers\Notification\NotificationServiceProvider::class,
         App\Providers\Transaction\TransactionServiceProvider::class,
         App\Providers\Users\UsersServiceProvider::class,
     ],
