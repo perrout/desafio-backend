@@ -2,12 +2,13 @@
 
 namespace App\Repositories\Transaction;
 
-use App\Jobs\Notification\SendTransferReceipt;
+use App\Exceptions\CustomException;
 use App\Models\Transaction;
 use App\Repositories\Transaction\TransactionRepositoryContract;
 use App\Repositories\Users\UsersRepositoryContract;
 use App\Services\Notification\NotificationServiceContract;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class TransactionRepository implements TransactionRepositoryContract
@@ -32,15 +33,18 @@ class TransactionRepository implements TransactionRepositoryContract
     {
         DB::beginTransaction();
         try {
-            $transaction = $this->model->findOrFail($transactionId);
+            $transaction = $this->model->reversible()->findOrFail($transactionId);
             $this->usersRepository->increaseBalance($transaction->payer_id, $transaction->value);
             $this->usersRepository->decreaseBalance($transaction->payee_id, $transaction->value);
+            $transaction->update(['status' => 'canceled']);
             DB::commit();
             return $transaction;
         } catch (Exception $e) {
             DB::rollback();
-            report($e);
-            return false;
+            if ($e instanceof ModelNotFoundException) {
+                throw new CustomException("This transaction is not reversible.", 422);
+            }
+            throw $e;
         }
     }
 
