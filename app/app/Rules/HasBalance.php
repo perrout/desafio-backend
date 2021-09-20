@@ -30,7 +30,7 @@ class HasBalance implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value <= $this->repository->getWallet($this->userId);
+        return $this->repository->hasBalance($this->userId, $value);
     }
 
     /**

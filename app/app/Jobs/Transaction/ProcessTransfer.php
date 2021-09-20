@@ -38,7 +38,7 @@ class ProcessTransfer implements ShouldQueue
     public function handle(TransactionServiceContract $transactionService)
     {
         if ($this->authorization->status()) {
-            $transactionService->handleTransfer($this->transaction);
+            $transactionService->handleTransfer($this->transaction->toArray());
         }
     }
 }

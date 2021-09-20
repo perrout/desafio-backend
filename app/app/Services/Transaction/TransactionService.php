@@ -26,20 +26,20 @@ class TransactionService implements TransactionServiceContract
     public function createTransfer(array $data)
     {
         $transfer = $this->transactionRepository->transfer($data);
-        ProcessTransfer::dispatch($transfer, $this->authorizationService);
+        ProcessTransfer::dispatch($transfer, $this->authorizationService)->delay(now()->addMinutes(1));
         return $transfer;
     }
 
-    public function handleTransfer(object $data)
+    public function handleTransfer(array $data)
     {
         DB::beginTransaction();
         try {
-            $payer = $this->usersRepository->findById($data->payer_id);
-            $payee = $this->usersRepository->findById($data->payee_id);
-            $this->usersRepository->update($data->payer_id, ['wallet' => $payer->wallet -= floatval($data->value)]);
-            $this->usersRepository->update($data->payee_id, ['wallet' => $payee->wallet += floatval($data->value)]);
+            $this->usersRepository->decreaseBalance($data['payer_id'], $data['value']);
+            $this->usersRepository->increaseBalance($data['payee_id'], $data['value']);
+            $this->transactionRepository->setStatusCompleted($data['id']);
             DB::commit();
         } catch (Exception $e) {
+            $this->transactionRepository->setStatusFailed($data['id']);
             DB::rollback();
         }
     }

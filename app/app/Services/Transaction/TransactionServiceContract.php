@@ -5,5 +5,5 @@ namespace App\Services\Transaction;
 interface TransactionServiceContract
 {
     public function createTransfer(array $data);
-    public function handleTransfer(object $data);
+    public function handleTransfer(array $data);
 }

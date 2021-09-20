@@ -51,4 +51,30 @@ class UsersRepository implements UsersRepositoryContract
         $user = $this->findById($userId);
         return $user->wallet ?: 0;
     }
+
+    public function hasBalance($userId, $value)
+    {
+        if ($this->getWallet($userId) >= $value) {
+            return true;
+        }
+        return false;
+    }
+
+    public function increaseBalance($userId, $value)
+    {
+        $user = $this->findById($userId);
+        $user->update([
+            'wallet' => $user->wallet += floatval($value)
+        ]);
+        return $user;
+    }
+
+    public function decreaseBalance($userId, $value)
+    {
+        $user = $this->findById($userId);
+        $user->update([
+            'wallet' => $user->wallet -= floatval($value)
+        ]);
+        return $user;
+    }
 }
