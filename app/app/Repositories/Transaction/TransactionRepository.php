@@ -51,9 +51,7 @@ class TransactionRepository implements TransactionRepositoryContract
                 'transaction_id' => $transaction->id,
                 'data' => $transaction->toJson()
             ];
-            $notification = $this->notificationService->createNotitication($notificationData);
-
-            SendTransferReceipt::dispatch($notification, $this->notificationService);
+            $this->notificationService->createNotitication($notificationData);
             return true;
         }
         return false;
