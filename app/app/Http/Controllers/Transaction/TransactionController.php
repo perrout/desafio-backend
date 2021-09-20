@@ -39,4 +39,22 @@ class TransactionController extends Controller
         }
     }
 
+    public function revert($transactionId)
+    {
+        try{
+            $transaction = $this->service->revertTransfer($transactionId);
+            $response = [
+                'status' => true,
+                'data' => $transaction
+            ];
+            return response()->json($response);
+        } catch (Exception $e) {
+            $response = [
+                'status' => false,
+                'error' => $e->getMessage()
+            ];
+            return response()->json($response, $e->getCode());
+        }
+    }
+
 }
