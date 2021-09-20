@@ -12,7 +12,7 @@ class Notification extends Model
     protected $table = 'notifications';
 
     protected $fillable = [
-        'transfer_id',
+        'transaction_id',
         'data',
         'status'
     ];
