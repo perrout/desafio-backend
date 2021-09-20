@@ -40,9 +40,13 @@ cd desafio-backend/
 make build
 make up
 ```
-- Configurações - API
+- Configurações - API (aguardar todos os serviços subirem antes de executar esse comando)
 ```
 make setup
+```
+- Testes - API
+```
+make test
 ```
 - Url de acesso
 ```
@@ -53,7 +57,8 @@ http://loacalhost
 
 | Method | URI                               | Nome                      | Ação                                       | Descrição                                   |
 |--------|-----------------------------------|---------------------------|--------------------------------------------|---------------------------------------------|
-| POST   | /api/transaction                  | transaction               | Transaction\TransactionController@trasnfer | Realiza transferências entre carteiras      |
+| POST   | /api/transaction                  | transaction.create        | Transaction\TransactionController@trasnfer | Realiza transferências entre carteiras      |
+| POST   | /api/transaction/{id}/revert      | transaction.revert        | Transaction\TransactionController@revert   | Reverte transferências entre carteiras      |
 
 
 ## Payload
