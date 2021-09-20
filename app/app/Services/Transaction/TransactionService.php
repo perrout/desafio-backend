@@ -24,6 +24,11 @@ class TransactionService implements TransactionServiceContract
         return $this->transactionRepository->createTransfer($transaction);
     }
 
+    public function revertTransfer(int $transactionId)
+    {
+        return $this->transactionRepository->revertTransfer($transactionId);
+    }
+
     public function handleTransfer(array $transaction)
     {
         if ($this->transactionRepository->handleTransfer($transaction)) {
