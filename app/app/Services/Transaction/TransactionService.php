@@ -12,21 +12,16 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionService implements TransactionServiceContract
 {
-    private $authorizationService;
     private $transactionRepository;
 
-    public function __construct(TransactionRepositoryContract $transactionRepository, AuthorizationServiceContract $authorizationService)
+    public function __construct(TransactionRepositoryContract $transactionRepository)
     {
         $this->transactionRepository = $transactionRepository;
-        $this->authorizationService = $authorizationService;
     }
 
     public function createTransfer(array $transaction)
     {
-        $transfer = $this->transactionRepository->createTransfer($transaction);
-        ProcessTransfer::dispatch($transfer, $this->authorizationService);
-        // ProcessTransfer::dispatch($transfer, $this->authorizationService)->delay(now()->addMinutes(1));
-        return $transfer;
+        return $this->transactionRepository->createTransfer($transaction);
     }
 
     public function handleTransfer(array $transaction)
@@ -36,6 +31,5 @@ class TransactionService implements TransactionServiceContract
         }
 
         return $this->transactionRepository->setStatusFailed($transaction['id']);
-
     }
 }
