@@ -2,21 +2,24 @@
 
 namespace App\Services\Notification;
 
+use App\Repositories\Notification\NotificationRepositoryContract;
 use Exception;
 use Illuminate\Support\Facades\Http;
 
 class NotificationService implements NotificationServiceContract
 {
-    private $httpClient;
     private $endpoint;
+    private $httpClient;
+    private $notificationRepository;
 
-    public function __construct(Http $httpClient)
+    public function __construct(Http $httpClient, NotificationRepositoryContract $notificationRepository)
     {
-        $this->httpClient = $httpClient;
         $this->endpoint = env('AUTHORIZATION_ENDPOINT', 'http://o4d9z.mocklab.io/notify');
+        $this->httpClient = $httpClient;
+        $this->notificationRepository = $notificationRepository;
     }
 
-    public function status()
+    public function send(array $notification)
     {
         try {
             $response = $this->httpClient::get($this->endpoint);
@@ -27,5 +30,10 @@ class NotificationService implements NotificationServiceContract
         } catch(Exception $e) {
             return false;
         }
+    }
+
+    public function handleNotitication(array $notification)
+    {
+        return $this->notificationRepository->setAsSent($notification);
     }
 }
