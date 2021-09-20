@@ -28,6 +28,22 @@ class TransactionRepository implements TransactionRepositoryContract
         return $this->model->create($data);
     }
 
+    public function revertTransfer(int $transactionId)
+    {
+        DB::beginTransaction();
+        try {
+            $transaction = $this->model->findOrFail($transactionId);
+            $this->usersRepository->increaseBalance($transaction->payer_id, $transaction->value);
+            $this->usersRepository->decreaseBalance($transaction->payee_id, $transaction->value);
+            DB::commit();
+            return $transaction;
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+            return false;
+        }
+    }
+
     public function handleTransfer(array $data)
     {
         DB::beginTransaction();
